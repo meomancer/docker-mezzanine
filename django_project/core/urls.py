@@ -34,6 +34,7 @@ urlpatterns = i18n_patterns("",
     ("^people/", include('mezzanine_people.urls')),
     ("^api/people/", "core.views.get_all_people"),
     ("^careers/", include("careers.urls")),
+    ("^map/", include("wms_client.urls")),
 )
 
 urlpatterns += patterns('',

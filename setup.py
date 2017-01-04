@@ -1,5 +1,8 @@
-from setuptools import setup
+import os
+from setuptools import find_packages, setup
 
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
+    README = readme.read()
 setup(
     name='mezzanine-kartoza',
     version='0.0.1',
@@ -26,18 +29,19 @@ setup(
         'git+https://github.com/meomancer/mezzanine-file-collections.git@master',
         'git+https://github.com/meomancer/django-wms-client.git@mezzanine',
     ],
+
     description='Easily plug a slideshow into your mezzanine website on all pages.',
     long_description=open('README.rst').read(),
 
-    author='Isaac Bythewood',
-    author_email='isaac@bythewood.me',
+    author='',
+    author_email='',
 
-    url='http://github.com/overshard/mezzanine-slides',
-    download_url='http://github.com/overshard/mezzanine-slides/downloads',
+    url='',
+    download_url='',
 
     include_package_data=True,
 
-    packages=['mezzanine_kartoza'],
+    packages=find_packages(),
 
     zip_safe=False,
     classifiers=[

@@ -1,3 +1,4 @@
 include README.rst
 include LICENSE.rst
 recursive-include mezzanine_kartoza *
+recursive-include kartoza_theme *

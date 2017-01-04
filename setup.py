@@ -1,6 +1,5 @@
 from setuptools import setup
 
-
 setup(
     name='mezzanine-kartoza',
     version='0.0.1',
@@ -14,10 +13,6 @@ setup(
         'django-sentry==1.13.5',
         'filebrowser-safe==0.4.5',
         'geopy==0.95.1',
-        'git+https://github.com/dimasciput/mezzanine-careers.git@develop',
-        'git+https://github.com/meomancer/mezzanine-modal-announcements.git@develop',
-        'git+https://github.com/meomancer/mezzanine-file-collections.git@master',
-        'git+https://github.com/meomancer/django-wms-client.git@mezzanine',
         'html5lib==0.9999999',
         'icalendar==3.0.1b2',
         'mezzanine',
@@ -32,6 +27,12 @@ setup(
         'Mezzanine >= 3.1.10',
         'six >= 1.5.2'],
 
+    dependency_links=[
+        'git+https://github.com/dimasciput/mezzanine-careers.git@develop',
+        'git+https://github.com/meomancer/mezzanine-modal-announcements.git@develop',
+        'git+https://github.com/meomancer/mezzanine-file-collections.git@master',
+        'git+https://github.com/meomancer/django-wms-client.git@mezzanine',
+    ],
     description='Easily plug a slideshow into your mezzanine website on all pages.',
     long_description=open('README.rst').read(),
 

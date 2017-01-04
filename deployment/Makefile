@@ -88,6 +88,13 @@ update-migrations:
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID) run uwsgi-ephemeral bash -c "pip uninstall -y South && python manage.py makemigrations"
 
+update-migrations-and-migrate:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Running update migrations in production mode"
+	@echo "------------------------------------------------------------------"
+	@docker-compose -p $(PROJECT_ID) run uwsgi-ephemeral bash -c "pip uninstall -y South && python manage.py makemigrations && python manage.py migrate"
+
 collectstatic:
 	@echo
 	@echo "------------------------------------------------------------------"

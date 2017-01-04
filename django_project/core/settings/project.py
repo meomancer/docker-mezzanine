@@ -29,7 +29,6 @@ DEBUG = TEMPLATE_DEBUG = False
 
 SOUTH_TESTS_MIGRATE = False
 
-
 # Set languages which want to be translated
 LANGUAGES = (
     ('en', _('English')),
@@ -41,10 +40,9 @@ LANGUAGES = (
 # Set storage path for the translation files
 LOCALE_PATHS = (absolute_path('locale'),)
 
-
 MIDDLEWARE_CLASSES = (
-    # Add any additional middleware classes here
-) + MIDDLEWARE_CLASSES
+                         # Add any additional middleware classes here
+                     ) + MIDDLEWARE_CLASSES
 
 DATABASES = {}
 
@@ -66,3 +64,27 @@ else:
     set_dynamic_settings(globals())
 
 from .celery_setting import *  # noqa
+
+####################
+# MEZZANINE EXTRA FIELDS #
+####################
+EXTRA_MODEL_FIELDS = (
+    (
+        "cartridge.shop.models.Order.dietary_requirements",
+        "CharField",
+        ("Dietary Requirements",),
+        {"blank": True, "default": "", "max_length": 100},
+    ),
+    (
+        "cartridge.shop.models.Order.plato",
+        "CharField",
+        ("Plato / CPD",),
+        {"blank": True, "default": "", "max_length": 100},
+    ),
+    (
+        "cartridge.shop.models.Order.how_to_find_out",
+        "TextField",
+        ("How did you find out?",),
+        {"blank": True, "default": ""},
+    ),
+)

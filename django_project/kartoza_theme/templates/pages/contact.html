@@ -35,7 +35,7 @@
             box-shadow: none;
         }
 
-        #contact-section {
+        #contact-section, #office-section {
             padding: 40px;
         }
 
@@ -52,6 +52,10 @@
             display: none;
         }
 
+        #office-section img {
+            float: left;
+            margin-right: 20px;
+        }
     </style>
 {% endblock %}
 
@@ -106,7 +110,11 @@
                     <br><br>
                     <b>Phone</b><br>
                     <b>Petra</b>: +27 (0)73 768 8108<br>
-                    <b>Johannesburg Office</b>: +27 (0)87 809 2702<br>
+                    {% for office in office.all %}
+                        {% if office.telephone %}
+                            <b>{{ office.title }}</b>: {{ office.telephone }}<br>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="col-lg-6">
                     <h2>Details</h2><br>
@@ -123,6 +131,17 @@
                 <br>
                 <div id="map"></div>
             </div>
+            <div id="office-section">
+                {% for office in office.all %}
+                    {% if office.address %}
+                        <div class="col-lg-6">
+                            <img src="{% static "img/pin-orange.svg" %}" class="img-responsive">
+                            <b>{{ office.title }}</b><br>
+                            {{ office.address }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     {% endeditable %}
 
@@ -137,6 +156,14 @@
     <script>
         let map = null;
         (function ($) {
+            let personIcon = L.icon($.extend({}, L.Icon.Default.prototype.options, {
+                iconUrl: '{% static "img/pin-blue.svg" %}',
+                shadowUrl: '{% static "js/leaflet/1.5.1/images/marker-shadow.png" %}',
+            }));
+            let officeIcon = L.icon($.extend({}, L.Icon.Default.prototype.options, {
+                iconUrl: '{% static "img/pin-orange.svg" %}',
+                shadowUrl: '{% static "js/leaflet/1.5.1/images/marker-shadow.png" %}',
+            }));
             $('.contact_us_button').addClass('btn-primary')
             $('.contact_us_button').removeClass('contact_us_button')
 
@@ -152,10 +179,20 @@
 
             let layer = L.geoJSON(null, {
                 onEachFeature: function (feature, layer) {
-                    layer.bindPopup(`
+                    if (feature.properties.type === 'person') {
+                        layer.setIcon(personIcon);
+                        layer.bindPopup(`
                           <h5>${feature.properties.first_name} ${feature.properties.last_name}</h5>
                           <div>${feature.properties.job_title}</div>
                         `);
+                    } else {
+                        layer.setIcon(officeIcon);
+                        layer.bindPopup(`
+                          <h5>${feature.properties.name}</h5>
+                          <div>${feature.properties.address}</div>
+                          <div>${feature.properties.telephone}</div>
+                        `);
+                    }
                 }
             });
             layer.addTo(map);
@@ -173,6 +210,22 @@
                             type: 'person'
                         },
                         "geometry": {{ people.location.json|safe }}
+                    });
+                {% endif %}
+            {% endfor %}
+
+            {# add office to map #}
+            {% for office in office.all %}
+                {% if office.location %}
+                    layer.addData({
+                        "type": "Feature",
+                        "properties": {
+                            name: '{{ office.title|safe }}',
+                            telephone: '{{ office.telephone|safe }}',
+                            address: '{{ office.address|safe }}',
+                            type: 'office'
+                        },
+                        "geometry": {{ office.location.json|safe }}
                     });
                 {% endif %}
             {% endfor %}

@@ -37,6 +37,19 @@ def about(request):
     return mez_render(request, templates, context)
 
 
+def contact(request):
+    """ Show contact page with person in the page
+    """
+    template = "pages/contact.html"
+    settings.use_editable()
+    templates = []
+    people = Person.objects.published()
+
+    context = {"people": people}
+    templates.append(template)
+    return mez_render(request, templates, context)
+
+
 def create_web_to_contact(request):
     recaptcha_result = validate_g_recaptcha(request)
     data = request.GET.copy()

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 from mezzanine.utils.models import get_user_model_name
 from mezzanine.core.models import Displayable, RichText, Slugged
@@ -37,6 +38,8 @@ class Person(Displayable, RichText, AdminThumbMixin):
                              related_name="user_link")
     admin_thumb_field = "mugshot"
     search_fields = {"first_name", "last_name", "bio", "job_title",}
+
+    location = models.PointField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Person")

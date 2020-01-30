@@ -1,26 +1,26 @@
-
 from copy import deepcopy
 
 from django.contrib import admin
+from django.contrib.gis import admin as gis_admin
 
 from .models import Person, PersonLink, PersonCategory
 from mezzanine.conf import settings
 from mezzanine.core.admin import DisplayableAdmin
 
-
 person_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 person_fieldsets[0][1]["fields"].insert(1, "categories")
-person_list_display = ["order","title", "status", "admin_link"]
+person_list_display = ["order", "title", "status", "admin_link"]
 person_fieldsets[0][1]["fields"].extend(["first_name", "last_name", "job_title",
                                          "mugshot", "mugshot_hover", "mugshot_credit", "bio", "email",
-                                         "order", "user"])
+                                         "order", "user", "location"])
 person_list_display.insert(1, "admin_thumb")
 
 
 class PersonLinkInline(admin.TabularInline):
     model = PersonLink
 
-class PersonAdmin(DisplayableAdmin):
+
+class PersonAdmin(gis_admin.OSMGeoAdmin, DisplayableAdmin):
     """
     Admin class for people.
     """
@@ -32,6 +32,7 @@ class PersonAdmin(DisplayableAdmin):
         PersonLinkInline,
     ]
     list_editable = ("order",)
+
 
 class PersonCategoryAdmin(admin.ModelAdmin):
     """
